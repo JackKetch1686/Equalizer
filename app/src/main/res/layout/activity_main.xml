@@ -10,12 +10,12 @@
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Play"
-    android:id="@+id/startMusic"
+    android:id="@+id/Play"
     />
     <Button android:layout_width="wrap_content"
             android:text="Pause"
             android:layout_height="wrap_content"
-            android:id="@+id/pause"
+            android:id="@+id/Pause"
     />
 
 </LinearLayout>
