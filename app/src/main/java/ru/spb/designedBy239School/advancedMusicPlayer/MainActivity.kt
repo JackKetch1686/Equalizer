@@ -80,13 +80,13 @@ class MainActivity : AppCompatActivity() {
         Log.d("MYMUSIC", "is list3 empty? "+list3.list().isEmpty().toString())
         var listMusic =getOurPlayList(list3)
 
-        val player = MediaPlayer.create(applicationContext,listMusic[0].toUri())
+        val mediaPlayer = MediaPlayer.create(applicationContext,listMusic[0].toUri())
         Play.setOnClickListener {
-            player.start()
+            mediaPlayer.start()
         }
 
         Pause.setOnClickListener{
-            player.pause()
+            mediaPlayer.pause()
         }
 //        Log.d("MYMUSIC", "is play list empty? "+listMusic.isEmpty().toString())
 //        for (i in list) {
