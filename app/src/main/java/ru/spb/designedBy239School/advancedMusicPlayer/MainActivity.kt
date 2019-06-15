@@ -1,6 +1,7 @@
 package ru.spb.designedBy239School.advancedMusicPlayer
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
@@ -88,14 +89,13 @@ class MainActivity : AppCompatActivity() {
         Pause.setOnClickListener{
             mediaPlayer.pause()
         }
-//        Log.d("MYMUSIC", "is play list empty? "+listMusic.isEmpty().toString())
-//        for (i in list) {
-//            Log.d("MYMUSIC", i.toString())
-//        }
-//        Log.d("MYMUSIC", "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Next path")
-//        for (i in list2) {
-//            Log.d("MYMUSIC", i.toString())
-//        }
+
+
+        val intent = Intent(this, EqualizerActivity::class.java)
+        intent.putExtra("Session_Id", mediaPlayer.audioSessionId.toString())
+        Equalizer_button.setOnClickListener {
+            startActivity(intent)
+        }
     }
 
 }
