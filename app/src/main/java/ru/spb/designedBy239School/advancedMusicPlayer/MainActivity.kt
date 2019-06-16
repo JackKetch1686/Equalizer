@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(this, EqualizerActivity::class.java)
         intent.putExtra("Session_Id", mediaPlayer.audioSessionId.toString())
+        Log.d("EQ", "audiosessionId is $${mediaPlayer.audioSessionId}")
 
         Equalizer_button.setOnClickListener {
             startActivity(intent)

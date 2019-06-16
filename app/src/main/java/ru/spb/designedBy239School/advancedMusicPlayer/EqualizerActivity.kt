@@ -19,8 +19,12 @@ class EqualizerActivity : AppCompatActivity() {
             text_view.text = intent.getCharSequenceExtra("Session_Id")
         }
 
-        val equalizer = Equalizer(1, intent.getStringExtra("Session_Id").toInt())
-        equalizer.hasControl()
+        val equalizer = Equalizer(0, intent.getStringExtra("Session_Id").toInt())
+        equalizer.enabled = true
+
+        if (equalizer.enabled || equalizer.hasControl()) Log.d("EQ",
+            "equalizer is enable and has control")
+
         Log.d("EQ", "Start level is ${equalizer.getBandLevel(0)}")
 
         text_preset.text = equalizer.getPresetName(equalizer.currentPreset)
@@ -39,15 +43,20 @@ class EqualizerActivity : AppCompatActivity() {
                 }
 
                 override fun onStopTrackingTouch(seekBar : SeekBar?) {
-                    equalizer.setBandLevel(bar.id.toString()[bar.id.toString().length].toShort(),
-                        seekBar!!.progress.toShort())
+                    val bandNumber = bar.id.toString()[bar.id.toString().length-1].toShort()
+                    equalizer.setBandLevel(bandNumber, seekBar!!.progress.toShort())
+                    text_band_0.text = equalizer.getBandLevel(bandNumber).toString()
                 }
-
             })
         }
 //        val bands = Array<Short>(5) { i->i.toShort() }
 //        for (band in bands) {
 //            Log.d("EQ",("${equalizer.getBandFreqRange(band)[0]} ${equalizer.getBandFreqRange(band)[1]}"))
 //        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
     }
 }
