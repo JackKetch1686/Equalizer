@@ -1,24 +1,24 @@
 package ru.spb.designedBy239School.advancedMusicPlayer
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-
+    private val REQUEST_CONSTANT=1
+    private  var player: MediaPlayer = MediaPlayer()
 
     private fun getPlayListStrings(inputFile : File) : ArrayList<HashMap<String,String>> {
         val filelist : ArrayList<HashMap<String,String>> = ArrayList()
@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val REQUEST_CONSTANT=1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -60,22 +59,37 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        //var musicList = getPlayListStrings(Environment.getExternalStorageDirectory())
-        var musicList : ArrayList<HashMap<String,String>> = ArrayList()
-        for (i in 0 until 10){
-            val map: HashMap<String, String> = hashMapOf("name" to "Oxxxymiron: trek ${i+1}")
-            musicList.add(map)
+        var listMusic = getPlayListStrings(Environment.getExternalStorageDirectory())
+
+        ToPlayListActivity.setOnClickListener {
+            val intent = Intent(this, PlaylistActivity::class.java)
+            startActivity(intent)
         }
-        Log.d("MYMUSIC","Play list is ready")
-        val nameOfMusicList :ArrayList<String> = ArrayList()
-        var k = 0
-        for (i in musicList){
-            nameOfMusicList.add(i["name"].toString())
-            Log.d("MYMUSIC",nameOfMusicList[k])
-            k++
+        ToPlayerActivity.setOnClickListener {
+            val intent = Intent(this, PlayerActivity::class.java)
+            startActivity(intent)
         }
-        val recyclerView: RecyclerView = findViewById(androidx.recyclerview.widget.RecyclerView.generateViewId())
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val listOfMyMusic: ArrayList<String> = ArrayList()
+        for (i in listMusic){
+            listOfMyMusic.add(i["name"].toString())
+        }
+
+        MainListView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfMyMusic)
+
+        MainListView.setOnItemClickListener { _ , item_Clicked, position, _ ->
+            (item_Clicked as TextView).text = item_Clicked.text.toString() + " ...playing"
+            Intent(this, PlayerActivity::class.java).putExtra(
+                "data_id",
+                item_Clicked.text.toString()
+            )
+            player.setDataSource(applicationContext, File(listMusic[position]["fullName"]).toUri())
+            player.start()
+        }
+        pause.setOnClickListener {
+            player.pause()
+        }
+
+
 
     }
 
