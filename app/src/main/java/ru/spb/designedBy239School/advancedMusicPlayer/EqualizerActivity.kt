@@ -20,6 +20,7 @@ class EqualizerActivity : AppCompatActivity() {
         }
 
         val equalizer = Equalizer(1, intent.getStringExtra("Session_Id").toInt())
+        equalizer.hasControl()
         Log.d("EQ", "Start level is ${equalizer.getBandLevel(0)}")
 
         text_preset.text = equalizer.getPresetName(equalizer.currentPreset)
@@ -28,21 +29,22 @@ class EqualizerActivity : AppCompatActivity() {
         tex_min_freq.text = equalizer.getBandFreqRange(0)[1].toString()
 
 
-        eq_seek_bar_1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(seekBar : SeekBar?) {
+        val bars = arrayOf(eq_seek_bar_0, eq_seek_bar_1, eq_seek_bar_2, eq_seek_bar_3, eq_seek_bar_4)
+        for(bar in bars) {
+            bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                }
 
-            }
+                override fun onStartTrackingTouch(p0: SeekBar?) {
+                }
 
-            override fun onStopTrackingTouch(seekBar : SeekBar?) {
-                equalizer.setBandLevel(0, seekBar!!.progress.toShort())
-                text_band_0.text = equalizer.getBandLevel(0).toString()
-            }
+                override fun onStopTrackingTouch(seekBar : SeekBar?) {
+                    equalizer.setBandLevel(bar.id.toString()[bar.id.toString().length].toShort(),
+                        seekBar!!.progress.toShort())
+                }
 
-            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-
-            }
-
-        })
+            })
+        }
 //        val bands = Array<Short>(5) { i->i.toShort() }
 //        for (band in bands) {
 //            Log.d("EQ",("${equalizer.getBandFreqRange(band)[0]} ${equalizer.getBandFreqRange(band)[1]}"))

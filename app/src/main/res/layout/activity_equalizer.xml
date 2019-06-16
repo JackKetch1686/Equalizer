@@ -61,6 +61,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
+            android:id="@+id/eq_seek_bar_0"
+            android:max="30000"
+            android:min="-30000"
+            android:progress="0"
+
+    />
+    <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
             android:id="@+id/eq_seek_bar_1"
             android:max="30000"
             android:min="-30000"
@@ -89,15 +99,6 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:id="@+id/eq_seek_bar_4"
-            android:max="30000"
-            android:min="-30000"
-            android:progress="0"
-    />
-    <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:id="@+id/eq_seek_bar_5"
             android:max="30000"
             android:min="-30000"
             android:progress="0"
