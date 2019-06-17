@@ -13,8 +13,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/text_view"
                 android:text="some text"
-                android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="10dp"
         />
 
         <TextView
@@ -50,11 +50,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tex_min_freq"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="some text"
         />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tex_max_freq"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:text = "some text"
+
         />
     </LinearLayout>
     <SeekBar
@@ -62,9 +69,10 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:id="@+id/eq_seek_bar_0"
-            android:max="30000"
-            android:min="-30000"
+            android:max="1500"
+            android:min="-1500"
             android:progress="0"
+            android:rotation="0"
 
     />
     <SeekBar
@@ -72,8 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:id="@+id/eq_seek_bar_1"
-            android:max="30000"
-            android:min="-30000"
+            android:max="1500"
+            android:min="-1500"
             android:progress="0"
     />
     <SeekBar
@@ -81,8 +89,8 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:id="@+id/eq_seek_bar_2"
-            android:max="30000"
-            android:min="-30000"
+            android:max="1500"
+            android:min="-1500"
             android:progress="0"
     />
     <SeekBar
@@ -90,8 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:id="@+id/eq_seek_bar_3"
-            android:max="30000"
-            android:min="-30000"
+            android:max="1500"
+            android:min="-1500"
             android:progress="0"
     />
     <SeekBar
@@ -99,8 +107,8 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:id="@+id/eq_seek_bar_4"
-            android:max="30000"
-            android:min="-30000"
+            android:max="1500"
+            android:min="-1500"
             android:progress="0"
     />
 </LinearLayout>
