@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private val REQUEST_CONSTANT=1
     private  var mediaPlayer = MediaPlayer().apply {
-        setAudioStreamType(AudioManager.STREAM_MUSIC)
     }
 
     private fun getPlayListStrings(inputFile : File) : ArrayList<HashMap<String,String>> {
@@ -85,23 +84,18 @@ class MainActivity : AppCompatActivity() {
 
         MainListView.setOnItemClickListener { _ , item_Clicked, position, _ ->
 
-            if (!mediaPlayer.isPlaying) {
                 (item_Clicked as TextView).text = item_Clicked.text.toString() + " ...playing"
                 Intent(this, PlayerActivity::class.java).putExtra(
                     "data_id",
                     item_Clicked.text.toString()
                 )
+                mediaPlayer.stop()
+                mediaPlayer.reset()
                 mediaPlayer.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
                 Log.d("MUSICLIST", listMusic[position]["fullName"])
                 mediaPlayer.prepare()
                 mediaPlayer.start()
-            } else{
 
-                mediaPlayer.stop()
-                mediaPlayer.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
-                mediaPlayer.prepare()
-                mediaPlayer.start()
-            }
         }
         Pause.setOnClickListener {
             mediaPlayer.pause()
