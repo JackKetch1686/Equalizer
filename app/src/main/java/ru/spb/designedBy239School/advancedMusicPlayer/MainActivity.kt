@@ -20,7 +20,7 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
     private val REQUEST_CONSTANT=1
-    private  var player = MediaPlayer().apply {
+    private  var mediaPlayer = MediaPlayer().apply {
         setAudioStreamType(AudioManager.STREAM_MUSIC)
     }
 
@@ -55,6 +55,17 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),  REQUEST_CONSTANT)
         }
 
+
+
+
+        val intent = Intent(this, EqualizerActivity::class.java)
+        intent.putExtra("Session_Id", mediaPlayer.audioSessionId.toString())
+        Log.d("EQ", "audiosessionId is $${mediaPlayer.audioSessionId}")
+
+        Equalizer_button.setOnClickListener {
+            startActivity(intent)
+        }
+
         var listMusic = getPlayListStrings(Environment.getExternalStorageDirectory())
         Log.d("MUSICLIST","is empty? "+ listMusic.isEmpty().toString())
         ToPlayListActivity.setOnClickListener {
@@ -74,26 +85,26 @@ class MainActivity : AppCompatActivity() {
 
         MainListView.setOnItemClickListener { _ , item_Clicked, position, _ ->
 
-            if (!player.isPlaying) {
+            if (!mediaPlayer.isPlaying) {
                 (item_Clicked as TextView).text = item_Clicked.text.toString() + " ...playing"
                 Intent(this, PlayerActivity::class.java).putExtra(
                     "data_id",
                     item_Clicked.text.toString()
                 )
-                player.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
+                mediaPlayer.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
                 Log.d("MUSICLIST", listMusic[position]["fullName"])
-                player.prepare()
-                player.start()
+                mediaPlayer.prepare()
+                mediaPlayer.start()
             } else{
 
-                player.stop()
-                player.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
-                player.prepare()
-                player.start()
+                mediaPlayer.stop()
+                mediaPlayer.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
+                mediaPlayer.prepare()
+                mediaPlayer.start()
             }
         }
-        pause.setOnClickListener {
-            player.pause()
+        Pause.setOnClickListener {
+            mediaPlayer.pause()
         }
 
 
