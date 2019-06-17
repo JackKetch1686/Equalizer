@@ -49,9 +49,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        var m = MediaMetadataRetriever()
-
+        
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),  REQUEST_CONSTANT)
         }
@@ -76,7 +74,6 @@ class MainActivity : AppCompatActivity() {
         for (i in listMusic){
             listOfMyMusic.add(i["name"].toString())
         }
-        m.setDataSource(listMusic[0]["fullName"])
 
         MainListView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfMyMusic)
 
