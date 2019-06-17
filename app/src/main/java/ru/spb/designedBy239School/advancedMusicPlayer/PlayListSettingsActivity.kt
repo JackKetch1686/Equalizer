@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_play_list.*
 import kotlinx.android.synthetic.main.activity_play_list_settings.*
-import ru.spb.designedBy239School.advancedMusicPlayer.MainActivity
-import com.example.myapplication.PlaylistActivity as PlayListActivity1
 
 class PlayListSettingsActivity : AppCompatActivity() {
 
@@ -21,7 +18,7 @@ class PlayListSettingsActivity : AppCompatActivity() {
         Log.d("MYMUSIC", "before adapter ")
 
         backToPlayListActivity.setOnClickListener{
-            startActivity(Intent(this, com.example.myapplication.PlaylistActivity::class.java))
+            startActivity(Intent(this, PlaylistActivity::class.java))
         }
 
         PlayListSettingsListView.adapter = adapterOfSettings

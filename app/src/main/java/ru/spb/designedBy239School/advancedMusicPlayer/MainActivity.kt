@@ -3,9 +3,11 @@ package ru.spb.designedBy239School.advancedMusicPlayer
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +20,9 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
     private val REQUEST_CONSTANT=1
-    private  var player: MediaPlayer = MediaPlayer()
+    private  var player = MediaPlayer().apply {
+        setAudioStreamType(AudioManager.STREAM_MUSIC)
+    }
 
     private fun getPlayListStrings(inputFile : File) : ArrayList<HashMap<String,String>> {
         val filelist : ArrayList<HashMap<String,String>> = ArrayList()
@@ -47,20 +51,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                REQUEST_CONSTANT
-            )
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),  REQUEST_CONSTANT)
         }
 
         var listMusic = getPlayListStrings(Environment.getExternalStorageDirectory())
-
+        Log.d("MUSICLIST","is empty? "+ listMusic.isEmpty().toString())
         ToPlayListActivity.setOnClickListener {
             val intent = Intent(this, PlaylistActivity::class.java)
             startActivity(intent)
@@ -77,13 +73,24 @@ class MainActivity : AppCompatActivity() {
         MainListView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfMyMusic)
 
         MainListView.setOnItemClickListener { _ , item_Clicked, position, _ ->
-            (item_Clicked as TextView).text = item_Clicked.text.toString() + " ...playing"
-            Intent(this, PlayerActivity::class.java).putExtra(
-                "data_id",
-                item_Clicked.text.toString()
-            )
-            player.setDataSource(applicationContext, File(listMusic[position]["fullName"]).toUri())
-            player.start()
+
+            if (!player.isPlaying) {
+                (item_Clicked as TextView).text = item_Clicked.text.toString() + " ...playing"
+                Intent(this, PlayerActivity::class.java).putExtra(
+                    "data_id",
+                    item_Clicked.text.toString()
+                )
+                player.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
+                Log.d("MUSICLIST", listMusic[position]["fullName"])
+                player.prepare()
+                player.start()
+            } else{
+
+                player.stop()
+                player.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
+                player.prepare()
+                player.start()
+            }
         }
         pause.setOnClickListener {
             player.pause()
