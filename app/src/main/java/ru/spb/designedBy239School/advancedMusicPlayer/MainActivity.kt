@@ -3,11 +3,14 @@ package ru.spb.designedBy239School.advancedMusicPlayer
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.AudioManager
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -16,41 +19,26 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-
-    fun getOurPlayList(inputFile: File): ArrayList<File>{
-        val filelist : ArrayList<File> = ArrayList()
-        for (file in inputFile.listFiles()){
-            if(file.name.endsWith(".mp3")){
-                filelist.add(file)
-            }
-        }
-        return filelist
+    private val REQUEST_CONSTANT=1
+    private  var mediaPlayer = MediaPlayer().apply {
+        setAudioStreamType(AudioManager.STREAM_MUSIC)
     }
 
-    val REQUEST_CONSTANT=1
-    fun getPlayList(inputFile : File) : ArrayList<HashMap<String,String>> {
-
+    private fun getPlayListStrings(inputFile : File) : ArrayList<HashMap<String,String>> {
         val filelist : ArrayList<HashMap<String,String>> = ArrayList()
-        for (file in inputFile.listFiles()){
-            if(file.name.endsWith(".mp3")){
-
-            }
-        }
-
         try {
             val files = inputFile.listFiles() //here you will get NPE if directory doesn't contains any file,handle it like this.
             for (file in files) {
-                if (file.isDirectory()) {
-
-                    if (getPlayList(file) != null) {
-                        filelist.addAll(getPlayList(file))
+                if (file.isDirectory) {
+                    if (getPlayListStrings(file) != null) {
+                        filelist.addAll(getPlayListStrings(file))
                     } else {
                         break
                     }
                 } else if (file.getName().endsWith(".mp3")) {
                     val song = HashMap<String, String>()
-                    Log.d("MYMUSIC",song.put("file_path", file.getAbsolutePath()))
-                    song.put("file_name", file.getName())
+                    song["name"] = file.name
+                    song["fullName"] = file.absolutePath
                     filelist.add(song)
                 }
             }
@@ -63,32 +51,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                REQUEST_CONSTANT
-            )
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),  REQUEST_CONSTANT)
         }
 
-        var list = Environment.getExternalStorageDirectory().list()
-        var list2 = Environment.getExternalStorageDirectory().listFiles().get(2).list()
-        var list3 = Environment.getExternalStorageDirectory().listFiles().get(2)
-        Log.d("MYMUSIC", "is list3 empty? "+list3.list().isEmpty().toString())
-        var listMusic =getOurPlayList(list3)
 
-        val mediaPlayer = MediaPlayer.create(applicationContext,listMusic[0].toUri())
-        Play.setOnClickListener {
-            mediaPlayer.start()
-        }
-
-        Pause.setOnClickListener{
-            mediaPlayer.pause()
-        }
 
 
         val intent = Intent(this, EqualizerActivity::class.java)
@@ -98,6 +65,50 @@ class MainActivity : AppCompatActivity() {
         Equalizer_button.setOnClickListener {
             startActivity(intent)
         }
+
+        var listMusic = getPlayListStrings(Environment.getExternalStorageDirectory())
+        Log.d("MUSICLIST","is empty? "+ listMusic.isEmpty().toString())
+        ToPlayListActivity.setOnClickListener {
+            val intent = Intent(this, PlaylistActivity::class.java)
+            startActivity(intent)
+        }
+        ToPlayerActivity.setOnClickListener {
+            val intent = Intent(this, PlayerActivity::class.java)
+            startActivity(intent)
+        }
+        val listOfMyMusic: ArrayList<String> = ArrayList()
+        for (i in listMusic){
+            listOfMyMusic.add(i["name"].toString())
+        }
+
+        MainListView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfMyMusic)
+
+        MainListView.setOnItemClickListener { _ , item_Clicked, position, _ ->
+
+            if (!mediaPlayer.isPlaying) {
+                (item_Clicked as TextView).text = item_Clicked.text.toString() + " ...playing"
+                Intent(this, PlayerActivity::class.java).putExtra(
+                    "data_id",
+                    item_Clicked.text.toString()
+                )
+                mediaPlayer.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
+                Log.d("MUSICLIST", listMusic[position]["fullName"])
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+            } else{
+
+                mediaPlayer.stop()
+                mediaPlayer.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+            }
+        }
+        Pause.setOnClickListener {
+            mediaPlayer.pause()
+        }
+
+
+
     }
 
 }
