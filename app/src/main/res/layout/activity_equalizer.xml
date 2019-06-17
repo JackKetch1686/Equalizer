@@ -14,8 +14,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/text_view"
                 android:text="some text"
-                android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="10dp"
         />
 
         <TextView
@@ -51,11 +51,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tex_min_freq"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="some text"
         />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tex_max_freq"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="10dp"
+                android:text = "some text"
+
         />
     </LinearLayout>
     <SeekBar
@@ -66,6 +73,7 @@
             android:max="1500"
             android:min="-1500"
             android:progress="0"
+            android:rotation="0"
 
     />
     <SeekBar
