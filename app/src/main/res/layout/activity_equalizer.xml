@@ -50,7 +50,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tex_min_freq"
+                android:id="@+id/text_bassboost_strength"
                 android:layout_marginVertical="10dp"
                 android:layout_marginHorizontal="10dp"
                 android:text="some text"
@@ -65,6 +65,11 @@
 
         />
     </LinearLayout>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "75 Hz (SUB BASS)"
+    />
     <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,8 +78,11 @@
             android:max="1500"
             android:min="-1500"
             android:progress="0"
-            android:rotation="0"
-
+    />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "290 Hz (BASS)"
     />
     <SeekBar
             android:layout_width="match_parent"
@@ -85,6 +93,11 @@
             android:min="-1500"
             android:progress="0"
     />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "1130 Hz"
+    />
     <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,6 +106,11 @@
             android:max="1500"
             android:min="-1500"
             android:progress="0"
+    />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "4400 Hz"
     />
     <SeekBar
             android:layout_width="match_parent"
@@ -103,6 +121,11 @@
             android:min="-1500"
             android:progress="0"
     />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "13500 Hz"
+    />
     <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,4 +135,39 @@
             android:min="-1500"
             android:progress="0"
     />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "BASSboost(doesnt work)"
+    />
+    <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:id="@+id/eq_seek_bar_BASS"
+            android:max="1000"
+            android:min="0"
+            android:progress="0"
+    />
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    >
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id = "@+id/preset_1"
+                android:text = "Preset 1"
+                android:layout_marginHorizontal="10dp"
+
+        />
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id = "@+id/preset_2"
+                android:text = "Preset 2"
+                android:layout_marginHorizontal="10dp"
+
+        />
+    </LinearLayout>
 </LinearLayout>
