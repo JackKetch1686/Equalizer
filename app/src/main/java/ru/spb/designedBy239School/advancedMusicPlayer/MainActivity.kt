@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
                     if (getPlayListStrings(file) != null) {
                         filelist.addAll(getPlayListStrings(file))
                     } else {
+
                         break
                     }
                 } else if (file.getName().endsWith(".mp3")) {
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, EqualizerActivity::class.java)
             intent.putExtra("Session_Id", mediaPlayer.audioSessionId.toString())
             startActivity(intent)
+
         }
 
         var listMusic = getPlayListStrings(Environment.getExternalStorageDirectory())

@@ -12,11 +12,16 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <meta-data
+                android:name="com.google.android.actions"
+                />
+
         <activity android:name=".EqualizerActivity">
         </activity>
-        <activity android:name=".PlayerActivity">        </activity>
-        <activity android:name=".PlaylistActivity"></activity>
-        <activity android:name=".PlayListSettingsActivity"></activity>
+        <activity android:name=".PlayerActivity">
+        </activity>
+        <activity android:name=".PlaylistActivity"/>
+        <activity android:name=".PlayListSettingsActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
