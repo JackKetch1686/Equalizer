@@ -20,8 +20,7 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
     private val REQUEST_CONSTANT=1
-    private  var mediaPlayer = MediaPlayer().apply {
-    }
+    private  var mediaPlayer = MediaPlayer()
 
     private fun getPlayListStrings(inputFile : File) : ArrayList<HashMap<String,String>> {
         val filelist : ArrayList<HashMap<String,String>> = ArrayList()
