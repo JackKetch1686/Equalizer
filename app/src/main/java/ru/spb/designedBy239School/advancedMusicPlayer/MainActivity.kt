@@ -3,7 +3,7 @@ package ru.spb.designedBy239School.advancedMusicPlayer
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.AudioManager
+import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Environment
@@ -49,18 +49,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),  REQUEST_CONSTANT)
         }
 
-
-
-
-        val intent = Intent(this, EqualizerActivity::class.java)
-        intent.putExtra("Session_Id", mediaPlayer.audioSessionId.toString())
-        Log.d("EQ", "audiosessionId is $${mediaPlayer.audioSessionId}")
-
         Equalizer_button.setOnClickListener {
+            val intent = Intent(this, EqualizerActivity::class.java)
+            intent.putExtra("Session_Id", mediaPlayer.audioSessionId.toString())
             startActivity(intent)
         }
 
@@ -71,8 +67,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         ToPlayerActivity.setOnClickListener {
-            val intent = Intent(this, PlayerActivity::class.java)
-            startActivity(intent)
+            //val intent = Intent(this, PlayerActivity::class.java)
+            //startActivity(intent)
         }
         val listOfMyMusic: ArrayList<String> = ArrayList()
         for (i in listMusic){
@@ -98,6 +94,9 @@ class MainActivity : AppCompatActivity() {
         }
         Pause.setOnClickListener {
             mediaPlayer.pause()
+        }
+        Play.setOnClickListener {
+            mediaPlayer.start()
         }
 
 
