@@ -15,7 +15,6 @@
             android:text="EQUALIZER"
             android:layout_marginLeft="150dp"
             android:layout_marginTop="40dp"
-            android:text_size="60"
 
     />
     <TextView
@@ -132,7 +131,8 @@
                 android:id = "@+id/preset_1"
                 android:text = "Preset 1"
                 android:layout_marginHorizontal="20dp"
-                android:background = "color/colorButtonDark"
+                android:background = "@color/colorButtonDark"
+
 
         />
         <Button
@@ -141,7 +141,9 @@
                 android:id = "@+id/preset_2"
                 android:text = "Preset 2"
                 android:layout_marginHorizontal="10dp"
-                android:background = "color/colorButtonDark"
+                android:background = "@color/colorButtonDark"
+
+
         />
     </LinearLayout>
 </LinearLayout>

@@ -16,7 +16,6 @@ class EqualizerActivity : AppCompatActivity() {
 
         if (intent.hasExtra("Session_Id")) {
             Log.d("EQ", "has Extra " + intent.getStringExtra("Session_Id"))
-            text_view.text = intent.getCharSequenceExtra("Session_Id")
         }
 
         val bassboost = BassBoost(0, intent.getStringExtra("Session_Id").toInt())
@@ -43,8 +42,6 @@ class EqualizerActivity : AppCompatActivity() {
 
         Log.d("EQ", "Start level is ${equalizer.getBandLevel(0)}")
 
-        text_preset.text = equalizer.getPresetName(equalizer.currentPreset)
-        text_number_of_bands.text = equalizer.numberOfBands.toString()
 
         eq_seek_bar_0.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {

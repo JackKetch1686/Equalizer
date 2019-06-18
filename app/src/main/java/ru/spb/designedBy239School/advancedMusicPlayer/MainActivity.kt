@@ -7,6 +7,8 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +18,7 @@ import androidx.core.net.toUri
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private val REQUEST_CONSTANT=1
     private  var mediaPlayer = MediaPlayer()
@@ -98,8 +100,29 @@ class MainActivity : AppCompatActivity() {
             mediaPlayer.start()
         }
 
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.sorts,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            settings_spinner.adapter = adapter
+        }
+
+        settings_spinner.onItemSelectedListener = this
+
+    }
 
 
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+        Log.d("SPINNER", parent.getItemAtPosition(position).toString())
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback
     }
 
 }
