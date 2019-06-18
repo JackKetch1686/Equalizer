@@ -13,24 +13,18 @@
             android:gravity="center"
             android:textSize="30dp"
     />
-    <Button
-            android:text="←TO PLAYER"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/ToPlayerActivity"/>
-    <Button
-            android:text="TO PLAYLISTS→"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/ToPlayListActivity"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content">
-        <ListView android:layout_width="match_parent"
-                  android:id="@+id/MainListView"
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_view"
+        >
 
-                  android:layout_height="match_parent">
-        </ListView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -46,11 +40,7 @@
                 android:text="Play"
                 android:id="@+id/Play"
         />
-        <Button android:layout_width="wrap_content"
-                android:text="EQ"
-                android:layout_height="wrap_content"
-                android:id="@+id/Equalizer_button"
-        /></LinearLayout>
+        </LinearLayout>
     <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:id="@+id/image"
     />

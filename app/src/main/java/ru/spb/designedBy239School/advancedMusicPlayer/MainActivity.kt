@@ -5,22 +5,23 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.TextView
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.spb.designedBy239School.advancedMusicPlayer.adapter.MyRecyclerViewAdapter
+import ru.spb.designedBy239School.advancedMusicPlayer.adapter.RecyclerItem
+import ru.spb.designedBy239School.advancedMusicPlayer.service.BackgroundAudioService
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MyRecyclerViewAdapter.OnSongListner, View.OnClickListener {
 
-    private val REQUEST_CONSTANT=1
-    private  var mediaPlayer = MediaPlayer()
 
     private fun getPlayListStrings(inputFile : File) : ArrayList<HashMap<String,String>> {
         val filelist : ArrayList<HashMap<String,String>> = ArrayList()
@@ -31,12 +32,13 @@ class MainActivity : AppCompatActivity() {
                     if (getPlayListStrings(file) != null) {
                         filelist.addAll(getPlayListStrings(file))
                     } else {
+
                         break
                     }
                 } else if (file.getName().endsWith(".mp3")) {
                     val song = HashMap<String, String>()
                     song["name"] = file.name
-                    song["fullName"] = file.absolutePath
+                    song["path"] = file.absolutePath
                     filelist.add(song)
                 }
             }
@@ -49,58 +51,79 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),  REQUEST_CONSTANT)
+            ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),  0)
         }
+//        Equalizer_button.setOnClickListener {
+//            val intent = Intent(this, EqualizerActivity::class.java)
+//            intent.putExtra("Session_Id", mediaPlayer.audioSessionId.toString())
+//            startActivity(intent)
+//        }
 
-        Equalizer_button.setOnClickListener {
-            val intent = Intent(this, EqualizerActivity::class.java)
-            intent.putExtra("Session_Id", mediaPlayer.audioSessionId.toString())
-            startActivity(intent)
-        }
+        var recyclerView: RecyclerView = findViewById(R.id.recycler_view)
+        recyclerView.layoutManager= LinearLayoutManager(this)
+        val recyclerItems:ArrayList<RecyclerItem> = ArrayList()
+//        var listMusic = getPlayListStrings(Environment.getExternalStorageDirectory())
+//        for (i in listMusic){
+//            var m = MediaMetadataRetriever()
+//            m.setDataSource(i["path"])
+//            var image = m.getEmbeddedPicture()
+//            var artist = "artist: "+ m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+//            var album =""+ m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
+//            var song = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+//            if (song==null) song= i["name"]
+//            recyclerItems.add(
+//                RecyclerItem(
+//                    song,
+//                    artist,
+//                    album,
+//                    image,
+//                    i["path"].toString()
+//                )
+//            )
+//        }
+        var m = MediaMetadataRetriever()
+        m.setDataSource(this, Uri.parse("android.resource://ru.spb.designedBy239School.advancedMusicPlayer/raw/heavy"))
+        var artist = "artist: "+ m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+        var album = ""+ m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
+        var song = ""+m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+        recyclerItems.add(RecyclerItem(song, artist, album, m.embeddedPicture,"android.resource://ru.spb.designedBy239School.advancedMusicPlayer/raw/heavy"))
 
-        var listMusic = getPlayListStrings(Environment.getExternalStorageDirectory())
-        Log.d("MUSICLIST","is empty? "+ listMusic.isEmpty().toString())
-        ToPlayListActivity.setOnClickListener {
-            val intent = Intent(this, PlaylistActivity::class.java)
-            startActivity(intent)
-        }
-        ToPlayerActivity.setOnClickListener {
-            //val intent = Intent(this, PlayerActivity::class.java)
-            //startActivity(intent)
-        }
-        val listOfMyMusic: ArrayList<String> = ArrayList()
-        for (i in listMusic){
-            listOfMyMusic.add(i["name"].toString())
-        }
+        m.setDataSource(this, Uri.parse("android.resource://ru.spb.designedBy239School.advancedMusicPlayer/raw/sugar"))
+        artist ="artist: "+ m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+        album =""+ m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
+        song = ""+m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+        recyclerItems.add(RecyclerItem(song, artist, album, m.embeddedPicture,"android.resource://ru.spb.designedBy239School.advancedMusicPlayer/raw/heavy"))
 
-        MainListView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfMyMusic)
+        m.setDataSource(this, Uri.parse("android.resource://ru.spb.designedBy239School.advancedMusicPlayer/raw/ne_s_nachala_oxxymiron"))
+        artist ="artist: "+ m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+        album =""+ m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM)
+        song = ""+m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+        recyclerItems.add(RecyclerItem(song, artist, album, m.embeddedPicture,"android.resource://ru.spb.designedBy239School.advancedMusicPlayer/raw/heavy"))
+        val adapterR = MyRecyclerViewAdapter(recyclerItems, this, this)
+        recyclerView.adapter= adapterR
 
-        MainListView.setOnItemClickListener { _ , item_Clicked, position, _ ->
 
-                (item_Clicked as TextView).text = item_Clicked.text.toString() + " ...playing"
-                Intent(this, PlayerActivity::class.java).putExtra(
-                    "data_id",
-                    item_Clicked.text.toString()
-                )
-                mediaPlayer.stop()
-                mediaPlayer.reset()
-                mediaPlayer.setDataSource(this, File(listMusic[position]["fullName"]).toUri())
-                Log.d("MUSICLIST", listMusic[position]["fullName"])
-                mediaPlayer.prepare()
-                mediaPlayer.start()
-
-        }
-        Pause.setOnClickListener {
-            mediaPlayer.pause()
-        }
-        Play.setOnClickListener {
-            mediaPlayer.start()
-        }
+        Pause.setOnClickListener(this)
+        Play.setOnClickListener(this)
 
 
 
     }
+    override fun onClick(p0: View?) {
+        Log.d("SERVICE","MainActivity Start/Stop")
+        if (p0==Play){
+            startService(Intent(this, BackgroundAudioService::class.java))
+        } else{
+            stopService(Intent(this, BackgroundAudioService::class.java))
+
+        }
+
+    }
+
+    override fun onNoteCLick(position: Int) {
+        Log.d("ONCLICKLISTNER",position.toString())
+    }
+
 
 }
