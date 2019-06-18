@@ -1,6 +1,6 @@
 package ru.spb.designedBy239School.advancedMusicPlayer
 
-import android.widget.ImageView
 
-class RecyclerItem(val song: String, val artist:String, val picture: ImageView) {
+class RecyclerItem(val SongName: String, val SongAuthorName:String , val Album :String, val photoId: Int) {
+
 }
