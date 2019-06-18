@@ -13,13 +13,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = MyViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(FragmentOne(), "One ")
-        adapter.addFragment(FragmentTwo(), "Two ")
-        adapter.addFragment(FragmentThree(), "Three ")
-        adapter.addFragment(FragmentFour(), " Four")
-        viewPager.adapter=adapter
-        tabs.setupWithViewPager(viewPager)
+        val adapterOfMainActivity = MyViewPagerAdapter(supportFragmentManager)
+        adapterOfMainActivity.addFragment(FragmentMainActivity(), "MainActivity ")
+        adapterOfMainActivity.addFragment(FragmentMyPlaylist(), "MyPlaylist ")
+
+        vpOfPlaylist.adapter=adapterOfMainActivity
+        tabsOfPlayerAndEqualizerActivity.setupWithViewPager(vpOfPlaylist)
 
     }
 
