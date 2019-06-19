@@ -8,7 +8,7 @@
         tools:context=".MainActivity" android:orientation="vertical">
     <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/tabsOfPlayerAndEqualizerActivity"
+            android:layout_height="match_parent" android:id="@+id/tabsOfMainActivity"
             app:tabMode="fixed"
             android:layout_weight="1"
             app:tabGravity="fill">
@@ -30,6 +30,6 @@
     </com.google.android.material.tabs.TabLayout>
     <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/vpOfPlaylist" android:layout_weight="0.1"
+            android:layout_height="match_parent" android:id="@+id/vpOfMainActivity" android:layout_weight="0.1"
     />
 </LinearLayout>
