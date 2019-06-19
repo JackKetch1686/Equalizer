@@ -1,6 +1,7 @@
 package ru.spb.designedBy239School.advancedMusicPlayer
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
@@ -20,8 +21,9 @@ import java.io.File
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
-    private val REQUEST_CONSTANT=1
+    private val REQUEST_CONSTANT = 1
     private  var mediaPlayer = MediaPlayer()
+    private var listOfMusicNames: ArrayList<String> = ArrayList()
 
     private fun getPlayListStrings(inputFile : File) : ArrayList<HashMap<String,String>> {
         val filelist : ArrayList<HashMap<String,String>> = ArrayList()
@@ -67,19 +69,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val intent = Intent(this, PlaylistActivity::class.java)
             startActivity(intent)
         }
-        ToPlayerActivity.setOnClickListener {
-            //val intent = Intent(this, PlayerActivity::class.java)
-            //startActivity(intent)
-        }
-        val listOfMyMusic: ArrayList<String> = ArrayList()
+
         for (i in listMusic){
-            listOfMyMusic.add(i["name"].toString())
+            listOfMusicNames.add(i["name"].toString())
         }
-
-        MainListView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfMyMusic)
-
+        MainListView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfMusicNames)
         MainListView.setOnItemClickListener { _ , item_Clicked, position, _ ->
-
             (item_Clicked as TextView).text = item_Clicked.text.toString() + " ...playing"
             Intent(this, PlayerActivity::class.java).putExtra(
                 "data_id",
@@ -113,12 +108,20 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         settings_spinner.onItemSelectedListener = this
 
+        TODO() // add searchView
+//        if (search.is)
+
     }
 
 
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
         Log.d("SPINNER", parent.getItemAtPosition(position).toString())
+        if (parent.getItemAtPosition(position).toString() == "Sort by artist") {
+            listOfMusicNames.sort()
+            Log.d("SPINNER", "Its sort by artist")
+            MainListView.adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfMusicNames)
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {
